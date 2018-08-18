@@ -1,6 +1,5 @@
-package jp.snowday.tutorial.demo.security;
+package jp.snowday.tutorial.demo.infrastructure.auth;
 
-import jp.snowday.tutorial.demo.service.security.MyUserDetailsService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -9,14 +8,12 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @AllArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    MyUserDetailsService detailsService;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -35,6 +32,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(detailsService).passwordEncoder(new BCryptPasswordEncoder());
+        //auth.userDetailsService(detailsService).passwordEncoder(new BCryptPasswordEncoder());
     }
 }
