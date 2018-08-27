@@ -1,4 +1,4 @@
-package jp.snowday.tutorial.demo.infrastructure.util.codeenum;
+package jp.snowday.tutorial.demo.infrastructure.util.code;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

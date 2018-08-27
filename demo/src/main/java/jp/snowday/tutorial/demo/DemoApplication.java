@@ -4,7 +4,9 @@ import com.fasterxml.classmate.TypeResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.request.async.DeferredResult;
@@ -55,6 +57,7 @@ public class DemoApplication {
                                 .responseModel(new ModelRef("Error"))
                                 .build()))
                 .enableUrlTemplating(true)
+                /*
                 .globalOperationParameters(
                         newArrayList(new ParameterBuilder()
                                 .name("someGlobalParameter")
@@ -62,7 +65,7 @@ public class DemoApplication {
                                 .modelRef(new ModelRef("string"))
                                 .parameterType("query")
                                 .required(true)
-                                .build()))
+                                .build())) */
                 .tags(new Tag("Pet Service", "All apis relating to pets"))
                 ;
     }

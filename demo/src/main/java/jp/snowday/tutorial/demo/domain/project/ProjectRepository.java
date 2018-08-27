@@ -39,7 +39,15 @@ s     */
 
     /**
      * プロジェクトを更新する
-     * @param prj 更新するプロジェクト
+     * <b>Nullカラムは更新しない<b/>
+     * @param prj 更新するプロジェクト難易度
      */
-    void update(@Nonnull final Project prj);
+    void updateExcludesNull(@Nonnull final Project prj);
+
+    /**
+     * プロジェクトの組織コードが存在しているかどうかをチェックする
+     * @param deptId 組織コード
+     * @return true(組織コードが存在する) / false(組織コードが存在しない)
+     */
+    boolean isDeptIdValid(@Nonnull final Long deptId);
 }

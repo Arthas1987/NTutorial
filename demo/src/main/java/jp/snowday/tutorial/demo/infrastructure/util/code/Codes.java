@@ -1,4 +1,4 @@
-package jp.snowday.tutorial.demo.infrastructure.util.codeenum;
+package jp.snowday.tutorial.demo.infrastructure.util.code;
 
 import javax.annotation.Nonnull;
 
@@ -7,14 +7,14 @@ import javax.annotation.Nonnull;
  * @author zhangnan
  * @date 2018/8/19
  */
-public final class CodeEnums {
+public final class Codes {
     public enum ProjectDifficultyEnum implements CodeEnum<ProjectDifficultyEnum> {
         /**
          * デフォルトで三つ難易度を用意する
          */
-        EASY("0", "簡単"),
-        NORMAL("1", "普通"),
-        HARD("2", "難しい");
+        EASY("EASY", "簡単"),
+        NORMAL("NORMAL", "普通"),
+        HARD("HARD", "難しい");
 
         private String code;
         private String name;

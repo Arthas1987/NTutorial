@@ -1,12 +1,17 @@
 package jp.snowday.tutorial.demo.domain.project;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import jp.snowday.tutorial.demo.infrastructure.exception.OptimisticExclusiveException;
+import jp.snowday.tutorial.demo.infrastructure.util.messsage.DomainMessageKeys;
+import jp.snowday.tutorial.demo.infrastructure.util.messsage.InfraMessageKeys;
+import lombok.AllArgsConstructor;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * プロジェクトのサービスクラス
@@ -14,10 +19,13 @@ import java.util.List;
  * @date 2018/8/19
  */
 @Service
+@AllArgsConstructor
 public class ProjectService {
     /** プロジェクトのリポジトリ */
-    @Autowired
     private ProjectRepository projectRepository;
+
+    /** メッセージソース*/
+    private MessageSource messageSource;
 
     //================
     // メソッド
@@ -35,23 +43,35 @@ public class ProjectService {
      * プロジェクト新規登録
      * @param name プロジェクト名
      * @param deptId 組織ID
-     * @param code 難易度（Null可能）
+     * @param difficulty 難易度（Null可能）
      */
-    public void save(@Nonnull String name, @Nonnull Long deptId, @Nullable String code) {
-        projectRepository.save(Project.registerNewProject(name, deptId, code));
+    public void save(@Nonnull String name, @Nonnull Long deptId, @Nullable String difficulty) {
+
+        validateDepartmentId(deptId);
+
+        projectRepository.save(Project.registerNewProject(name, deptId, difficulty));
     }
 
     /**
-     * IDでプロジェクトを取得
+     * IDでプロジェクトを取得 <br/>
+     * <b>取得できない場合排他エラーでスローする</b>
      * @param id プロジェクトID
+     * @return 取得したプロジェクト
      */
-    public void getProjectById(@Nonnull Long id) {
-        // FIXME: これは普通にフロントレイヤーでやるべきでは..?
-        if (StringUtils.isEmpty(id)) {
-            return;
+    @Nonnull
+    public Project getProjectById(@Nonnull Long id) {
+        Project prj = projectRepository.findById(id);
+
+        // バリデーションはフロントでやる為、
+        if (prj == null) {
+            throw new OptimisticExclusiveException(
+                    messageSource.getMessage(InfraMessageKeys.OPTIMISTIC_EXCLUSIVE_ERROR.getMessageKey()
+                    ,null
+                    ,Locale.JAPAN)
+            );
         }
 
-        projectRepository.findById(id);
+        return prj;
     }
 
     /**
@@ -64,19 +84,33 @@ public class ProjectService {
 
     /**
      * プロジェクト難易度を変更する
-     * TODO: フロントレイヤーがIDをチェックする想定だが、排他などにより、ここでIDが存在していない可能性ある。普通ならここで排他エラースローすべきだが、今回はNULL返す
      * @param id プロジェクトID
      * @param code 難易度コード
      */
-    public void updateDifficulity(@Nonnull Long id, @Nullable String code) {
-        //FIXME: ここ違和感感じてる。なんでDBからエンティティー取得しなければならないか？リポジトリ層は、本当に「このビジネスロジックと合わせるようなメソッド」を定義すべきでは・・
-        Project prj = projectRepository.findById(id);
+    public void updateDifficulity(@Nonnull Long id, @Nonnull String code) {
+        projectRepository.updateExcludesNull(Project.updateProject(id, code));
+    }
 
-        if (prj == null) {
+    //================
+    // 内部ビジネスロジック
+
+    /**
+     * 組織コードのバリデーション
+     * DBに存在していない場合、IllegalArgumentException例外でスロー
+     * @param deptId 組織コード
+     */
+    private void validateDepartmentId(@Nonnull Long deptId) {
+        // 組織コードのバリデーション
+        if (projectRepository.isDeptIdValid(deptId)) {
             return;
         }
 
-        prj.setDiificulty(code);
-        projectRepository.update(prj);
+        // お前はもう死んでいる
+        // FIXME: 400 Bad Request にする
+        throw new IllegalArgumentException(
+                    messageSource.getMessage(
+                             DomainMessageKeys.Project.ERROR_INVALID_DEPARTMENT_ID.getMessageKey()
+                            ,Collections.singletonList(deptId).toArray()
+                            ,Locale.JAPAN));
     }
 }
