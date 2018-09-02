@@ -7,6 +7,7 @@ import org.springframework.util.StringUtils;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Date;
 
 /**
  * プロジェクトエンティティ
@@ -19,20 +20,55 @@ public class Project {
     // Member変数
 
     /** プロジェクトID */
-    @Getter
     private Long id;
 
+    public Project(Long id, String name, Long deptId, Codes.ProjectDifficultyEnum difficulty, Date lastUpdateTime, Date createdTime) {
+        this.id = id;
+        this.name = name;
+        this.deptId = deptId;
+        this.difficulty = difficulty;
+        this.lastUpdateTime = lastUpdateTime;
+        this.createdTime = createdTime;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Long getDeptId() {
+        return deptId;
+    }
+
+    public Codes.ProjectDifficultyEnum getDifficulty() {
+        return difficulty;
+    }
+
+    public Date getLastUpdateTime() {
+        return lastUpdateTime;
+    }
+
+    public Date getCreatedTime() {
+        return createdTime;
+    }
+
     /** プロジェクト名 */
-    @Getter
     private String name;
 
     /** 組織ID */
-    @Getter
     private Long deptId;
 
     /** 難易度 */
-    @Getter
     private Codes.ProjectDifficultyEnum difficulty;
+
+    /** 最終更新日 */
+    private Date lastUpdateTime;
+
+    /** 作成日 */
+    private Date createdTime;
 
     //================
     // コンストラクター
@@ -62,6 +98,8 @@ public class Project {
         this.name = name;
         this.deptId = deptId;
         this.difficulty = setDiff(difficultyCode);
+
+
     }
 
     /**
@@ -98,14 +136,6 @@ public class Project {
     @Nonnull
     public static Project updateProject(@Nonnull Long id, @Nonnull String difficultyCode) {
         return new Project(id, difficultyCode);
-    }
-
-    /**
-     * コードに基づいて、プロジェクト難易度を設定する
-     * @param difficultyCode　難易度のコード
-     */
-    public void setDifficulty(@Nullable String difficultyCode) {
-        this.setDiff(difficultyCode);
     }
 
     //================

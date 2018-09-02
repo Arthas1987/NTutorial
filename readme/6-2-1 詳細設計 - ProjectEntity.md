@@ -1,3 +1,18 @@
+# 6-2-1 詳細設計 - ProjectEntity
+
+## Package
+
+`jp.snowday.tutorial.demo.infrastructure.persistence.mysql.mybatis.entity.ProjectEntity`
+
+
+
+## 責務
+
+- PROJECTテーブルのORマッピング
+
+## コード
+
+```Java
 package jp.snowday.tutorial.demo.infrastructure.persistence.mysql.mybatis.entity;
 
 import jp.snowday.tutorial.demo.infrastructure.util.annotation.Column;
@@ -50,3 +65,6 @@ public class ProjectEntity implements Serializable {
     @Column(name = "version")
     private Long version;
 }
+
+```
+
