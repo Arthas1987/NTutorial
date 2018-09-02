@@ -12,6 +12,7 @@ import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Stream;
 
 /**
  * プロジェクトのサービスクラス
@@ -54,7 +55,7 @@ public class ProjectService {
 
     /**
      * IDでプロジェクトを取得 <br/>
-     * <b>取得できない場合排他エラーでスローする</b>
+     * <p>取得できない場合排他エラーでスローする</p>
      * @param id プロジェクトID
      * @return 取得したプロジェクト
      */
