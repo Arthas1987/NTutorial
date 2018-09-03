@@ -16,7 +16,7 @@ SELECT project_id, project_nm, dept_id, difficulty FROM PROJECT
 
 #### ProjectController
 
-![sequence - controller](pic/sequence - controller.png)
+![sequence - controller](pic/sequence_controller.png)
 
 #### ProjectUseCase以降
 
