@@ -16,9 +16,9 @@ SELECT project_id, project_nm, dept_id, difficulty FROM PROJECT
 
 #### ProjectController
 
-![sequence - controller](/Users/zhangnan/dev/NTutorial/readme/pic/sequence - controller.png)
+![sequence - controller](pic/sequence - controller.png)
 
 #### ProjectUseCase以降
 
-![sequence](/Users/zhangnan/dev/NTutorial/readme/pic/sequence.png)
+![sequence](pic/sequence.png)
 
